@@ -1,19 +1,26 @@
-version: '2'
+version: '3'
 
 services:
 
   elasticsearch:
     build:
       context: elasticsearch/
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
     volumes:
       - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - ${ELK_DATA}:/usr/share/elasticsearch/data:rw
     ports:
       - "9200:9200"
       - "9300:9300"
     environment:
-      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ES_JAVA_OPTS: "-Xmx512m -Xms512m"
     networks:
-      - elk
+      elk:
+        aliases:
+          - elasticsearch
 
   logstash:
     build:
@@ -24,9 +31,11 @@ services:
     ports:
       - "5000:5000"
     environment:
-      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+      LS_JAVA_OPTS: "-Xmx512m -Xms512m"
     networks:
-      - elk
+      elk:
+        aliases:
+          - logstash
     depends_on:
       - elasticsearch
 
@@ -38,7 +47,9 @@ services:
     ports:
       - "5601:5601"
     networks:
-      - elk
+      elk:
+        aliases:
+          - kibana
     depends_on:
       - elasticsearch
 
