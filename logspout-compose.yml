@@ -7,6 +7,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
-      ROUTE_URIS: logstash+tcp://${LOGSTASH_URL}
+      ROUTE_URIS: logstash://${LOGSTASH_URL}
       LOGSTASH_TAGS: ${LOGSTASH_TAGS}
     restart: always
