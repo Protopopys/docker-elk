@@ -11,7 +11,7 @@ services:
         hard: -1
     volumes:
       - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
-      - ${ELK_DATA}:/usr/share/elasticsearch/data:rw
+      - ${ELASTICSEARCH_DATA}:/usr/share/elasticsearch/data:rw
     ports:
       - "9200:9200"
       - "9300:9300"
