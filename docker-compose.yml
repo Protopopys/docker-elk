@@ -3,6 +3,7 @@ version: '3'
 services:
 
   elasticsearch:
+    container_name: elasticsearch
     build:
       context: elasticsearch/
     ulimits:
@@ -23,6 +24,7 @@ services:
           - elasticsearch
 
   logstash:
+    container_name: logstash
     build:
       context: logstash/
     volumes:
@@ -41,6 +43,7 @@ services:
       - elasticsearch
 
   kibana:
+    container_name: kibana 
     build:
       context: kibana/
     volumes:
