@@ -9,4 +9,5 @@ services:
     environment:
       ROUTE_URIS: logstash://${LOGSTASH_URL}
       LOGSTASH_TAGS: ${LOGSTASH_TAGS}
+      LOGSTASH_FIELDS: name_server=${LOGSTASH_FIELDS_NAME_SERVER}
     restart: always
