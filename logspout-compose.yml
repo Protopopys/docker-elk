@@ -10,4 +10,6 @@ services:
       ROUTE_URIS: logstash://${LOGSTASH_URL}
       LOGSTASH_TAGS: ${LOGSTASH_TAGS}
       LOGSTASH_FIELDS: name_server=${LOGSTASH_FIELDS_NAME_SERVER}
+      RETRY_STARTUP: "yes"
+      RETRY_SEND: "yes"
     restart: always
