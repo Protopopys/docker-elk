@@ -1,4 +1,4 @@
-version: "3.6"
+version: "3"
 
 services:
 
@@ -15,6 +15,7 @@ services:
       elk:
         aliases:
           - elasticsearch
+#    restart: on-failure
 
   logstash:
     volumes:
@@ -26,12 +27,13 @@ services:
           - logstash
     depends_on:
       - elasticsearch
+#    restart: on-failure
 
   kibana:
     ports:
       - "5601:5601"
     volumes:
-      - ${KIBANA_DATA:-/elk/kibana}:/usr/share/kibana/data:ro
+      - ${KIBANA_DATA:-/elk/kibana}:/usr/share/kibana/data:rw
       - $PWD/kibana/config/kibina.yml:/usr/share/kibana/config/logstash.yml:ro
     networks:
       elk:
@@ -39,6 +41,7 @@ services:
           - kibana
     depends_on:
       - elasticsearch
+#    restart: on-failure
 
 networks:
   elk:
