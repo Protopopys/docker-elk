@@ -1,5 +1,4 @@
 # https://github.com/elastic/kibana-docker
-FROM docker.elastic.co/kibana/kibana-oss:6.3.0
-
-# Add your kibana plugins setup here
-# Example: RUN kibana-plugin install <name|url>
+ARG KIBANA_IMAGE_URL=docker.elastic.co/kibana/kibana
+ARG KIBANA_VERSION=6.3.1
+FROM ${KIBANA_IMAGE_URL}:${KIBANA_VERSION}

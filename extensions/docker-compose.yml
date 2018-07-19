@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  logspout:
+    container_name: logspout
+    build:
+      context: logspout
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      LOGSPOUT: ignore
+      ROUTE_URIS: logstash://${LOGSTASH_URL}
+      LOGSTASH_TAGS: ${LOGSTASH_TAGS}
+      LOGSTASH_FIELDS: name_server=${LOGSTASH_FIELDS_NAME_SERVER}
+      #RETRY_STARTUP: 'yes'
+      RETRY_SEND: 'yes' 
+    restart: always

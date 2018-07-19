@@ -1,0 +1,19 @@
+version: "3.6"
+
+services:
+
+  metricbeat:
+    build:
+      context: beats/metricbeat
+    image: metricbeat:${METRICBEAT_VERSION:-6.3.1}
+    user: root
+    networks:
+      - elk
+    # disable strict permission checks
+    command: ["--strict.perms=false", "-system.hostfs=/hostfs"]
+    volumes:
+      - /proc:/hostfs/proc:ro
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+      - /:/hostfs:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+
