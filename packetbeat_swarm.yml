@@ -1,0 +1,27 @@
+version: "3.6"
+
+services:
+
+  packetbeat:
+    hostname: "{{.Node.Hostname}}-packetbeat"
+    configs:
+      - source: packetbeat_config
+        target: /usr/share/packetbeat/packetbeat.yml
+    volumes:
+      - packetbeat:/usr/share/packetbeat/data
+    environment:
+      - ELASTICSEARCH_HOST=${ELASTICSEARCH_HOST:-node1}
+      - KIBANA_HOST=${KIBANA_HOST:-node1}
+    deploy:
+      mode: global
+
+networks:
+  elk:
+    external: true
+
+volumes:
+  packetbeat:
+
+configs:
+  packetbeat_config:
+    file: $PWD/beats/packetbeat/config/packetbeat.yml

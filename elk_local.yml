@@ -1,0 +1,45 @@
+version: "3.6"
+
+services:
+
+  elasticsearch:
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - ${ELASTICSEARCH_DATA:-/elk/elasticsearch}:/usr/share/elasticsearch/data:rw
+      - $PWD/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    networks:
+      elk:
+        aliases:
+          - elasticsearch
+
+  logstash:
+    volumes:
+      - $PWD/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - $PWD/logstash/pipeline/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
+    networks:
+      elk:
+        aliases:
+          - logstash
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    ports:
+      - "5601:5601"
+    volumes:
+      - ${KIBANA_DATA:-/elk/kibana}:/usr/share/kibana/data:ro
+      - $PWD/kibana/config/kibina.yml:/usr/share/kibana/config/logstash.yml:ro
+    networks:
+      elk:
+        aliases:
+          - kibana
+    depends_on:
+      - elasticsearch
+
+networks:
+  elk:
+    driver: bridge

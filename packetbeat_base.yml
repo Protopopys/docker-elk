@@ -1,0 +1,16 @@
+version: "3.6"
+
+services:
+
+  packetbeat:
+    build:
+      context: beats/packetbeat
+    image: packetbeat:${PACKETBEAT_VERSION:-6.3.1}
+    user: root
+    networks:
+      - elk
+    # disable strict permission checks
+    command: ["--strict.perms=false"]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
