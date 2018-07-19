@@ -12,6 +12,8 @@ services:
         hard: -1
     environment:
       LOGSPOUT: ignore
+      ELASTIC_PASSWORD: changeme
+      bootstrap.memory_lock: 'true'
       ES_JAVA_OPTS: "-Xmx2048m -Xms2048m"
 
   logstash:

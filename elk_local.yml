@@ -15,7 +15,7 @@ services:
       elk:
         aliases:
           - elasticsearch
-#    restart: on-failure
+    restart: on-failure
 
   logstash:
     volumes:
@@ -27,7 +27,7 @@ services:
           - logstash
     depends_on:
       - elasticsearch
-#    restart: on-failure
+    restart: on-failure
 
   kibana:
     ports:
@@ -41,7 +41,7 @@ services:
           - kibana
     depends_on:
       - elasticsearch
-#    restart: on-failure
+    restart: on-failure
 
 networks:
   elk:
