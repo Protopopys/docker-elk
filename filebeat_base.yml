@@ -19,4 +19,4 @@ services:
       - /var/log/:/var/log/:ro
     environment:
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD:-changeme}
-      - FILEBEAT_INDEX_NAME=${INDEX_NAME:-filebeat}
+      - INDEX_NAME=${FILEBEAT_INDEX_NAME:-filebeat}
