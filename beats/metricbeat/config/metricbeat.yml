@@ -21,12 +21,12 @@ setup.template.enabled: true
 
 # Template name. By default the template name is "filebeat-%{[beat.version]}"
 # The template name and pattern has to be set in case the elasticsearch index pattern is modified.
-setup.template.name: "${INDEX_NAME:metricbeat}-%{[beat.version]}"
+setup.template.name: "metricbeat"
 
 # Template pattern. By default the template pattern is "-%{[beat.version]}-*" to apply to the default index settings.
 # The first part is the version of the beat and then -* is used to match all daily indices.
 # The template name and pattern has to be set in case the elasticsearch index pattern is modified.
-setup.template.pattern: "${INDEX_NAME:metricbeat}-%{[beat.version]}-*"
+setup.template.pattern: "metricbeat-${INDEX_NAME:default}-%{[beat.version]}-*"
 
 # Path to fields.yml file to generate the template
 #setup.template.fields: "${path.config}/fields.yml"
@@ -91,7 +91,7 @@ processors:
 #-------------------------- Elasticsearch output ------------------------------
 output.elasticsearch:
   hosts: ["${ELASTICSEARCH_HOST}:9200"]
-  index: "${INDEX_NAME:metricbeat}-%{[beat.version]}-%{+yyyy.MM.dd}"
+  index: "metricbeat-${INDEX_NAME:default}-%{[beat.version]}-%{+yyyy.MM.dd}"
   username: elastic
   password: ${ELASTIC_PASSWORD:changeme}
 
@@ -104,6 +104,7 @@ xpack.monitoring:
 # Loading the dashboards is disabled by default and can be enabled either by setting the options here, or by using the `-setup` CLI flag.
 setup.dashboards:
   enabled: true
+  index: "metricbeat-${INDEX_NAME:default}-*"
 setup.kibana:
   host: "${KIBANA_HOST}:5601"
   username: elastic

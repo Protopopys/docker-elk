@@ -19,45 +19,12 @@ filebeat.modules:
     enabled: false
 
 #============================== Template =======================================
-
-# A template is used to set the mapping in Elasticsearch
-# By default template loading is enabled and the template is loaded.
-# These settings can be adjusted to load your own template or overwrite existing ones.
-
-# Set to false to disable template loading.
 setup.template.enabled: true
+setup.template.name: "filebeat"
+setup.template.pattern: "filebeat-${INDEX_NAME:default}-%{[beat.version]}-*"
 
-# Template name. By default the template name is "filebeat-%{[beat.version]}"
-# The template name and pattern has to be set in case the elasticsearch index pattern is modified.
-setup.template.name: "${INDEX_NAME:filebeat}-%{[beat.version]}"
+#=========================== Autodiscovery ==============================
 
-# Template pattern. By default the template pattern is "-%{[beat.version]}-*" to apply to the default index settings.
-# The first part is the version of the beat and then -* is used to match all daily indices.
-# The template name and pattern has to be set in case the elasticsearch index pattern is modified.
-setup.template.pattern: "${INDEX_NAME:filebeat}-%{[beat.version]}-*"
-
-# Path to fields.yml file to generate the template
-#setup.template.fields: "${path.config}/fields.yml"
-
-# Overwrite existing template
-#setup.template.overwrite: false
-
-# Elasticsearch template settings
-setup.template.settings:
-
-  # A dictionary of settings to place into the settings.index dictionary
-  # of the Elasticsearch template. For more details, please check
-  # https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html
-  #index:
-    #number_of_shards: 1
-    #codec: best_compression
-    #number_of_routing_shards: 30
-
-  # A dictionary of settings for the _source field. For more details, please check
-  # https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-source-field.html
-  #_source:
-    #enabled: false
-#-------------------------------- Autodiscovery -------------------------------
 #filebeat.autodiscover:
 #  providers:
 #    - type: docker
@@ -90,7 +57,7 @@ filebeat.prospectors:
 #========================== Elasticsearch output ===============================
 output.elasticsearch:
   hosts: ["${ELASTICSEARCH_HOST}:9200"]
-  index: "${INDEX_NAME:filebeat}-%{[beat.version]}-%{+yyyy.MM.dd}"
+  index: "filebeat-${INDEX_NAME:default}-%{[beat.version]}-%{+yyyy.MM.dd}"
   username: elastic
   password: ${ELASTIC_PASSWORD:changeme}
 
@@ -101,6 +68,7 @@ xpack.monitoring:
 #============================== Dashboards =====================================
 setup.dashboards:
   enabled: true
+  index: "filebeat-${INDEX_NAME:default}-*"
 setup.kibana:
   host: "${KIBANA_HOST}:5601"
   username: elastic
