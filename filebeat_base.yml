@@ -17,3 +17,6 @@ services:
       - /var/lib/docker/containers/:/var/lib/docker/containers/:ro
       # This is needed for filebeat to load logs for system and auth modules
       - /var/log/:/var/log/:ro
+    environment:
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD:-changeme}
+      - FILEBEAT_INDEX_NAME=${INDEX_NAME:-filebeat}

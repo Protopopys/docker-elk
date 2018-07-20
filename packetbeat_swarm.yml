@@ -15,10 +15,6 @@ services:
     deploy:
       mode: global
 
-networks:
-  elk:
-    external: true
-
 volumes:
   packetbeat:
 

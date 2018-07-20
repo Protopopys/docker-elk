@@ -16,4 +16,6 @@ services:
       - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
       - /:/hostfs:ro
       - /var/run/docker.sock:/var/run/docker.sock
-
+    environment:
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD:-changeme}
+      - METRICBEAT_INDEX_NAME=${INDEX_NAME:-metricbeat}
