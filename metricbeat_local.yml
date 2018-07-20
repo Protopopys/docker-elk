@@ -9,6 +9,7 @@ services:
     environment:
       - ELASTICSEARCH_HOST=${ELASTICSEARCH_HOST}
       - KIBANA_HOST=${KIBANA_HOST}
+    restart: on-failure
 networks:
   elk:
     driver: bridge
