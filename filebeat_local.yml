@@ -11,5 +11,5 @@ services:
       - KIBANA_HOST=${KIBANA_HOST}
     restart: on-failure
 networks:
-  elk:
+  filebeat:
     driver: bridge

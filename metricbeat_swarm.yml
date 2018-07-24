@@ -16,7 +16,7 @@ services:
       mode: global
 
 networks:
-  elk:
+  metricbeat:
     external: true
 
 volumes:

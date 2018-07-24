@@ -8,7 +8,7 @@ services:
     image: filebeat-${FILEBEAT_VERSION:-6.3.1}
     user: root
     networks:
-      - elk
+      - filebeat
     # disable strict permission checks
     command: ["--strict.perms=false"]
     volumes:

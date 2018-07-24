@@ -16,7 +16,7 @@ services:
       mode: global
 
 networks:
-  elk:
+  filebeat:
     external: true
 
 volumes:
