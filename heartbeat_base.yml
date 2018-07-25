@@ -1,0 +1,16 @@
+version: "3.6"
+
+services:
+
+  heartbeat:
+    build:
+      context: beats/heartbeat
+    image: heartbeat-${HEARTBEAT_VERSION:-6.3.1}
+    user: root
+    networks:
+      - heartbeat
+    # disable strict permission checks
+    command: ["--strict.perms=false"]
+    environment:
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD:-changeme}
+      - INDEX_NAME=${HEARTBEAT_INDEX_NAME:-heartbeat}
