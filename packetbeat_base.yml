@@ -16,4 +16,4 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD:-changeme}
-      - INDEX_NAME=${PACKETBEAT_INDEX_NAME:-packetbeat}
+      - INDEX_NAME=${PACKETBEAT_INDEX_NAME:-default}
