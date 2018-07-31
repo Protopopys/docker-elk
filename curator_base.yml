@@ -1,0 +1,13 @@
+version: "3.6"
+
+services:
+
+  curator:
+    build:
+      context: curator/
+    image: curator-${CURATOR_VERSION:-5.5.4}
+    environment:
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD:-changeme}
+      - ELASTICSEARCH_HOST=${ELASTICSEARCH_HOST}
+      - CURATOR_INDEX_PATTERN=${CURATOR_INDEX_PREFIX:-filebeat-}
+    restart: on-failure
