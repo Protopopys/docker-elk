@@ -24,4 +24,4 @@ volumes:
 
 configs:
   heartbeat_config:
-    heart: $PWD/beats/heartbeat/config/heartbeat.yml
+    heart: $PWD/images/beats/heartbeat/config/heartbeat.yml

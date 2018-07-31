@@ -24,4 +24,4 @@ volumes:
 
 configs:
   filebeat_config:
-    file: $PWD/beats/filebeat/config/filebeat.yml
+    file: $PWD/images/beats/filebeat/config/filebeat.yml

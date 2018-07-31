@@ -20,4 +20,4 @@ volumes:
 
 configs:
   packetbeat_config:
-    file: $PWD/beats/packetbeat/config/packetbeat.yml
+    file: $PWD/images/beats/packetbeat/config/packetbeat.yml

@@ -5,7 +5,7 @@ services:
   metricbeat:
     volumes:
       - ${METRICBEAT_DATA:-/elk/metricbeat}:/usr/share/metricbeat/data:rw
-      - $PWD/beats/metricbeat/config/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro
+      - $PWD/images/beats/metricbeat/config/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro
     environment:
       - ELASTICSEARCH_HOST=${ELASTICSEARCH_HOST}
       - KIBANA_HOST=${KIBANA_HOST}

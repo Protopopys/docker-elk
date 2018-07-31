@@ -4,7 +4,7 @@ services:
 
   elasticsearch:
     build:
-      context: elasticsearch/
+      context: ../images/elasticsearch/
     image: elasticsearch-${ELASTICSEARCH_VERSION:-6.3.1}
     ulimits:
       memlock:
@@ -18,7 +18,7 @@ services:
 
   logstash:
     build:
-      context: logstash/
+      context: ../images/logstash/
     image: logstash-${LOGSTASH_VERSION:-6.3.1}
     ports:
       - "${LOGSTASH_TCP_PORT:-5000}:${LOGSTASH_TCP_PORT:-5000}/tcp"
@@ -32,7 +32,7 @@ services:
 
   kibana: 
     build:
-      context: kibana/
+      context: ../images/kibana/
     image: kibana-${KIBANA_VERSION:-6.3.1}
     environment:
       LOGSPOUT: ignore

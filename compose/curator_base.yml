@@ -4,7 +4,7 @@ services:
 
   curator:
     build:
-      context: curator/
+      context: ../images/curator/
     image: curator-${CURATOR_VERSION:-5.5.4}
     environment:
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD:-changeme}
