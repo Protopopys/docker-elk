@@ -1,11 +1,37 @@
-
+#==========================  Monitors configuration =============================
 heartbeat.monitors:
 - type: http
-  urls: ["${ELASTICSEARCH_HOST:http://elasticsearch:9200}"]
-  schedule: '@every 10s'
-  timeout: 16s
+  schedule: '@every 5s'
+  urls:
+    - ["${ELASTICSEARCH_HOST:http://elasticsearch:9200}"]
+    - ["${KIBANA_HOST:http://kibana:5601}"]
 
 
-- type: http
-  urls: ["${KIBANA_HOST:http://kibana:5601}"]
-  schedule: '*/5 * * * * * *'
+- type: icmp
+  schedule: '@every 5s'
+  hosts:
+    - elasticsearch
+    - kibana
+
+processors:
+- add_cloud_metadata:
+
+#============================== Template =======================================
+setup.template.enabled: true
+setup.template.name: "heartbeat"
+setup.template.pattern: "heartbeat-${INDEX_NAME:default}-%{[beat.version]}-*"
+
+output.elasticsearch:
+  hosts: ["${ELASTICSEARCH_HOST:http://elasticsearch:9200}"]
+  index: "heartbeat-${INDEX_NAME:default}-%{[beat.version]}-%{+yyyy.MM.dd}"
+  username: elastic
+  password: ${ELASTIC_PASSWORD:changeme}
+
+#============================== Dashboards =====================================
+setup.dashboards:
+  enabled: true
+  index: "heartbeat-${INDEX_NAME:default}-*"
+setup.kibana:
+  host: "${KIBANA_HOST:http://kibana:5601}"
+  username: elastic
+  password: ${ELASTIC_PASSWORD:changeme}

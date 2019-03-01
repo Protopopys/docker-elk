@@ -1,0 +1,21 @@
+version: "3.6"
+
+services:
+
+  metricbeat:
+    build:
+      context: ../images/beats/metricbeat
+    image: metricbeat:${METRICBEAT_VERSION:-6.3.1}
+    user: root
+    networks:
+      - metricbeat
+    # disable strict permission checks
+    command: ["--strict.perms=false", "-system.hostfs=/hostfs"]
+    volumes:
+      - /proc:/hostfs/proc:ro
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+      - /:/hostfs:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD:-changeme}
+      - INDEX_NAME=${METRICBEAT_INDEX_NAME:-default}
