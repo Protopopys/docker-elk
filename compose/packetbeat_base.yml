@@ -1,0 +1,19 @@
+version: "3.6"
+
+services:
+
+  packetbeat:
+    build:
+      context: beats/packetbeat
+    image: packetbeat:${PACKETBEAT_VERSION:-6.6.1}
+    user: root
+    network_mode: "host"
+    cap_add:
+      - NET_ADMIN
+    # disable strict permission checks
+    command: ["--strict.perms=false"]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD:-changeme}
+      - INDEX_NAME=${PACKETBEAT_INDEX_NAME:-packetbeat}

@@ -1,0 +1,15 @@
+version: "3.6"
+
+services:
+
+  heartbeat:
+    volumes:
+      - ${HEARTBEAT_DATA:-/elk/heartbeat}:/usr/share/heartbeat/data:rw
+      - $PWD/beats/heartbeat/config/heartbeat.yml:/usr/share/heartbeat/heartbeat.yml:ro
+    environment:
+      ELASTICSEARCH_HOST: ${ELASTICSEARCH_HOST:-http://elasticsearch:9200}
+      KIBANA_HOST: ${KIBANA_HOST:-http://kibana:5601}
+    restart: on-failure
+networks:
+  heartbeat:
+    driver: bridge

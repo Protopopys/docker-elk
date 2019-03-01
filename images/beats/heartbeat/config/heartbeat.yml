@@ -1,0 +1,11 @@
+
+heartbeat.monitors:
+- type: http
+  urls: ["${ELASTICSEARCH_HOST:http://elasticsearch:9200}"]
+  schedule: '@every 10s'
+  timeout: 16s
+
+
+- type: http
+  urls: ["${KIBANA_HOST:http://kibana:5601}"]
+  schedule: '*/5 * * * * * *'

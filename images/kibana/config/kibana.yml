@@ -1,0 +1,7 @@
+---
+server.name: kibana
+server.host: "0"
+server.basePath: ${KIBANA_BASE_PATH:/}
+elasticsearch.url: ${ELASTICSEARCH_HOST:http://elasticsearch:9200}
+elasticsearch.username: elastic
+elasticsearch.password: ${ELASTIC_PASSWORD:changeme}

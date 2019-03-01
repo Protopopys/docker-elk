@@ -1,0 +1,72 @@
+#==========================  Modules configuration =============================
+filebeat.modules:
+
+#------------------------------- System Module -------------------------------
+- module: system
+  # Syslog
+  syslog:
+    enabled: true
+    var.paths: ["/var/log/syslog*", "/var/log/messages*"]
+  auth:
+    enabled: true
+    var.paths: ["/var/log/auth.log*", "/var/log/secure*"]
+
+#------------------------------- Auditd Module -------------------------------
+# Does not look like Auditd is supported in Alpine linux:
+# https://github.com/linuxkit/linuxkit/issues/52
+- module: auditd
+  log:
+    enabled: false
+
+#============================== Template =======================================
+setup.template.enabled: true
+setup.template.name: "filebeat"
+setup.template.pattern: "filebeat-${INDEX_NAME:default}-%{[beat.version]}-*"
+
+#=========================== Filebeat prospectors ==============================
+
+
+filebeat.prospectors:
+- type: docker
+  containers.ids:
+    - '*'
+  processors:
+    - add_docker_metadata: ~
+    - add_cloud_metadata: ~
+    - add_locale: ~
+  ignore_decoding_error: true
+  json.keys_under_root: true
+
+#- type: log
+#  enabled: true
+#  paths:
+#    - '/var/lib/docker/containers/*/*.log'
+#  json.message_key: log
+#  json.add_error_key: true
+#  json.keys_under_root: true
+#  processors:
+#    - add_docker_metadata: ~
+#    - add_cloud_metadata: ~
+#    - add_locale: ~
+#  multiline.pattern: "^\t|^[[:space:]]+(at|...)|^Caused by:"
+#  multiline.match: after
+
+#========================== Elasticsearch output ===============================
+output.elasticsearch:
+  hosts: ["${ELASTICSEARCH_HOST:http://elasticsearch:9200}"]
+  index: "filebeat-${INDEX_NAME:default}-%{[beat.version]}-%{+yyyy.MM.dd}"
+  username: elastic
+  password: ${ELASTIC_PASSWORD:changeme}
+
+xpack.monitoring:
+  enabled: true
+  elasticsearch:
+
+#============================== Dashboards =====================================
+setup.dashboards:
+  enabled: true
+  index: "filebeat-${INDEX_NAME:default}-*"
+setup.kibana:
+  host: "${KIBANA_HOST:http://kibana:5601}"
+  username: elastic
+  password: ${ELASTIC_PASSWORD:changeme}
