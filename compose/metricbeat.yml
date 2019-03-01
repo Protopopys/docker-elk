@@ -1,0 +1,29 @@
+version: "3.7"
+services:
+
+  metricbeat:
+    user: root
+    build:
+      context: ../images/beats/metricbeat
+    image: metricbeat:${METRICBEAT_VERSION:-6.6.1}
+    # disable strict permission checks
+    command: ["--strict.perms=false", "-system.hostfs=/hostfs"]
+    restart: on-failure
+    environment:
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-changeme}
+      INDEX_NAME: ${METRICBEAT_INDEX_NAME:-metricbeat}
+      ELASTICSEARCH_HOST: ${ELASTICSEARCH_HOST:-http://elasticsearch:9200}
+      KIBANA_HOST: ${KIBANA_HOST:-http://kibana:5601}
+    volumes:
+      - /proc:/hostfs/proc:ro
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+      - /:/hostfs:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${METRICBEAT_DATA:-/elk/metricbeat}:/usr/share/metricbeat/data:rw
+      - $PWD/beats/metricbeat/config/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro
+    networks:
+      - metricbeat
+
+networks:
+  metricbeat:
+    driver: bridge

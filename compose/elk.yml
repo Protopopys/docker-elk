@@ -1,0 +1,76 @@
+version: "3.7"
+services:
+
+  elasticsearch:
+    build:
+      context: ../images/elasticsearch/
+    image: elasticsearch-${ELASTICSEARCH_VERSION:-6.6.1}
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    environment:
+      LOGSPOUT: ignore
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-changeme}
+      bootstrap.memory_lock: 'true'
+      ES_JAVA_OPTS: "-Xmx2048m -Xms2048m"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - ${ELASTICSEARCH_DATA:-/elk/elasticsearch}:/usr/share/elasticsearch/data:rw
+      - $PWD/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    networks:
+      elk:
+        aliases:
+          - elasticsearch
+    restart: on-failure
+
+  logstash:
+    build:
+      context: ../images/logstash/
+    image: logstash-${LOGSTASH_VERSION:-6.6.1}
+    ports:
+      - "${LOGSTASH_TCP_PORT:-5000}:${LOGSTASH_TCP_PORT:-5000}/tcp"
+      - "${LOGSTASH_UDP_PORT:-5000}:${LOGSTASH_UDP_PORT:-5000}/udp"
+    environment:
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-changeme}
+      TCP_PORT: ${LOGSTASH_TCP_PORT:-5000}
+      UDP_PORT: ${LOGSTASH_UDP_PORT:-5000}
+      LOGSPOUT: ignore
+      LS_JAVA_OPTS: "-Xmx2048m -Xms2048m"
+    volumes:
+      - $PWD/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - $PWD/logstash/pipeline/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
+    networks:
+      elk:
+        aliases:
+          - logstash
+    depends_on:
+      - elasticsearch
+    restart: on-failure
+
+  kibana: 
+    build:
+      context: ../images/kibana/
+    image: kibana-${KIBANA_VERSION:-6.6.1}
+    environment:
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-changeme}
+      KIBANA_BASE_PATH: ${KIBANA_BASE_PATH:-/}
+      LOGSPOUT: ignore
+    ports:
+      - "5601:5601"
+    volumes:
+      - ${KIBANA_DATA:-/elk/kibana}:/usr/share/kibana/data:rw
+      - $PWD/kibana/config/kibana.yml:/usr/share/kibana/config/logstash.yml:ro
+    networks:
+      elk:
+        aliases:
+          - kibana
+    depends_on:
+      - elasticsearch
+    restart: on-failure
+
+networks:
+  elk:
+    driver: bridge

@@ -1,0 +1,30 @@
+version: "3.7"
+services:
+
+  filebeat:
+    user: root
+    build:
+      context: ../images/beats/filebeat
+    image: filebeat-${FILEBEAT_VERSION:-6.6.1}
+    # disable strict permission checks
+    command: ["--strict.perms=false"]
+    restart: on-failure
+    environment:
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-changeme}
+      INDEX_NAME: ${FILEBEAT_INDEX_NAME:-filebeat}
+      ELASTICSEARCH_HOST: ${ELASTICSEARCH_HOST:-http://elasticsearch:9200}
+      KIBANA_HOST: ${KIBANA_HOST:-http://kibana:5601}
+    volumes:
+      - ${FILEBEAT_DATA:-/elk/filebeat}:/usr/share/filebeat/data:rw
+      - $PWD/beats/filebeat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      # This is needed for filebeat to load container log path as specified in filebeat.yml
+      - /var/lib/docker/containers/:/var/lib/docker/containers/:ro
+      # This is needed for filebeat to load logs for system and auth modules
+      - /var/log/:/var/log/:ro
+    networks:
+      - filebeat
+
+networks:
+  filebeat:
+    driver: bridge

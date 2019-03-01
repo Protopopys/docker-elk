@@ -90,7 +90,7 @@ processors:
 
 #-------------------------- Elasticsearch output ------------------------------
 output.elasticsearch:
-  hosts: ["${ELASTICSEARCH_HOST}:9200"]
+  hosts: ["${ELASTICSEARCH_HOST:http://elasticsearch:9200}"]
   index: "metricbeat-${INDEX_NAME:default}-%{[beat.version]}-%{+yyyy.MM.dd}"
   username: elastic
   password: ${ELASTIC_PASSWORD:changeme}
@@ -106,6 +106,6 @@ setup.dashboards:
   enabled: true
   index: "metricbeat-${INDEX_NAME:default}-*"
 setup.kibana:
-  host: "${KIBANA_HOST}:5601"
+  host: "${KIBANA_HOST:http://kibana:5601}"
   username: elastic
   password: ${ELASTIC_PASSWORD:changeme}
