@@ -1,0 +1,23 @@
+version: "3.7"
+services:
+
+  packetbeat:
+    user: root
+    build:
+      context: ../images/beats/packetbeat
+    image: packetbeat:${PACKETBEAT_VERSION:-6.6.1}
+    cap_add:
+      - NET_ADMIN
+    # disable strict permission checks
+    command: ["--strict.perms=false"]
+    restart: on-failure
+    environment:
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-changeme}
+      INDEX_NAME: ${PACKETBEAT_INDEX_NAME:-packetbeat}
+      ELASTICSEARCH_HOST: ${ELASTICSEARCH_HOST:-http://elasticsearch:9200}
+      KIBANA_HOST: ${KIBANA_HOST:-http://kibana:5601}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${PACKETBEAT_DATA:-/elk/packetbeat}:/usr/share/packetbeat/data:rw
+      - $PWD/beats/packetbeat/config/packetbeat.yml:/usr/share/packetbeat/packetbeat.yml:ro
+    network_mode: "host"
