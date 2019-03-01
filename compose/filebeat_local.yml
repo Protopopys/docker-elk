@@ -5,7 +5,7 @@ services:
   filebeat:
     volumes:
       - ${FILEBEAT_DATA:-/elk/filebeat}:/usr/share/filebeat/data:rw
-      - $PWD/beats/filebeat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - $PWD/images/beats/filebeat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
     environment:
       - ELASTICSEARCH_HOST=${ELASTICSEARCH_HOST}
       - KIBANA_HOST=${KIBANA_HOST}

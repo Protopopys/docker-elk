@@ -4,7 +4,7 @@ services:
 
   heartbeat:
     build:
-      context: beats/heartbeat
+      context: ../images/beats/heartbeat
     image: heartbeat-${HEARTBEAT_VERSION:-6.3.1}
     user: root
     networks:
@@ -13,4 +13,4 @@ services:
     command: ["--strict.perms=false"]
     environment:
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD:-changeme}
-      - INDEX_NAME=${HEARTBEAT_INDEX_NAME:-heartbeat}
+      - INDEX_NAME=${HEARTBEAT_INDEX_NAME:-default}

@@ -4,7 +4,7 @@ services:
 
   packetbeat:
     build:
-      context: beats/packetbeat
+      context: ../images/beats/packetbeat
     image: packetbeat:${PACKETBEAT_VERSION:-6.3.1}
     user: root
     network_mode: "host"
@@ -16,4 +16,4 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD:-changeme}
-      - INDEX_NAME=${PACKETBEAT_INDEX_NAME:-packetbeat}
+      - INDEX_NAME=${PACKETBEAT_INDEX_NAME:-default}

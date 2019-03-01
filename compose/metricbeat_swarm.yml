@@ -24,4 +24,4 @@ volumes:
 
 configs:
   metricbeat_config:
-    file: $PWD/beats/metricbeat/config/metricbeat.yml
+    file: $PWD/images/beats/metricbeat/config/metricbeat.yml

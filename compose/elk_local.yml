@@ -10,7 +10,7 @@ services:
       - "9300:9300"
     volumes:
       - ${ELASTICSEARCH_DATA:-/elk/elasticsearch}:/usr/share/elasticsearch/data:rw
-      - $PWD/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - $PWD/images/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
     networks:
       elk:
         aliases:
@@ -19,8 +19,8 @@ services:
 
   logstash:
     volumes:
-      - $PWD/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
-      - $PWD/logstash/pipeline/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
+      - $PWD/images/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - $PWD/images/logstash/pipeline/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
     networks:
       elk:
         aliases:
@@ -34,7 +34,7 @@ services:
       - "5601:5601"
     volumes:
       - ${KIBANA_DATA:-/elk/kibana}:/usr/share/kibana/data:rw
-      - $PWD/kibana/config/kibina.yml:/usr/share/kibana/config/logstash.yml:ro
+      - $PWD/images/kibana/config/kibina.yml:/usr/share/kibana/config/logstash.yml:ro
     networks:
       elk:
         aliases:

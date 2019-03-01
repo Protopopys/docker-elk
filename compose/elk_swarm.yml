@@ -92,10 +92,10 @@ volumes:
 
 configs:
   elasticsearch_config:
-    file: $PWD/elasticsearch/config/elasticsearch.yml
+    file: $PWD/images/elasticsearch/config/elasticsearch.yml
   logstash_config:
-    file: $PWD/logstash/config/logstash.yml
+    file: $PWD/images/logstash/config/logstash.yml
   logstash_pipline:
-    file: $PWD/logstash/pipeline/logstash.conf
+    file: $PWD/images/logstash/pipeline/logstash.conf
   kibana_config:
-    file: $PWD/kibana/config/kibina.yml
+    file: $PWD/images/kibana/config/kibina.yml
