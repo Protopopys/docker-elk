@@ -8,6 +8,7 @@ services:
     image: packetbeat:${PACKETBEAT_VERSION:-6.6.1}
     cap_add:
       - NET_ADMIN
+      - NET_RAW
     # disable strict permission checks
     command: ["--strict.perms=false"]
     restart: on-failure
@@ -19,5 +20,5 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${PACKETBEAT_DATA:-/elk/packetbeat}:/usr/share/packetbeat/data:rw
-      - $PWD/beats/packetbeat/config/packetbeat.yml:/usr/share/packetbeat/packetbeat.yml:ro
+      - $PWD/images/beats/packetbeat/config/packetbeat.yml:/usr/share/packetbeat/packetbeat.yml:ro
     network_mode: "host"

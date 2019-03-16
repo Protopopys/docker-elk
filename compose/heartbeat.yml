@@ -16,7 +16,7 @@ services:
       KIBANA_HOST: ${KIBANA_HOST:-http://kibana:5601}
     volumes:
       - ${HEARTBEAT_DATA:-/elk/heartbeat}:/usr/share/heartbeat/data:rw
-      - $PWD/beats/heartbeat/config/heartbeat.yml:/usr/share/heartbeat/heartbeat.yml:ro
+      - $PWD/images/beats/heartbeat/config/heartbeat.yml:/usr/share/heartbeat/heartbeat.yml:ro
     networks:
       - heartbeat
 
