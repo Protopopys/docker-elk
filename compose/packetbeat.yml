@@ -5,7 +5,7 @@ services:
     user: root
     build:
       context: ../images/beats/packetbeat
-    image: packetbeat:${PACKETBEAT_VERSION:-6.6.1}
+    image: packetbeat:${PACKETBEAT_VERSION:-7.1.0}
     cap_add:
       - NET_ADMIN
       - NET_RAW

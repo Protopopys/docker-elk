@@ -5,7 +5,7 @@ services:
     user: root
     build:
       context: ../images/beats/metricbeat
-    image: metricbeat:${METRICBEAT_VERSION:-6.6.1}
+    image: metricbeat:${METRICBEAT_VERSION:-7.1.0}
     # disable strict permission checks
     command: ["--strict.perms=false", "-system.hostfs=/hostfs"]
     restart: on-failure
