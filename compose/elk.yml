@@ -4,6 +4,9 @@ services:
   elasticsearch:
     build:
       context: ../images/elasticsearch/
+      args:
+        ELASTICSEARCH_IMAGE_URL: ${ELASTICSEARCH_IMAGE_URL:-elasticsearch}
+        ELASTICSEARCH_VERSION: ${ELASTICSEARCH_VERSION:-7.1.0}
     image: elasticsearch-${ELASTICSEARCH_VERSION:-7.1.0}
     ulimits:
       nproc: 65535
@@ -35,6 +38,9 @@ services:
   logstash:
     build:
       context: ../images/logstash/
+      args:
+        LOGSTASH_IMAGE_URL: ${LOGSTASH_IMAGE_URL:-logstash}
+        LOGSTASH_VERSION: ${LOGSTASH_VERSION:-7.1.0}
     image: logstash-${LOGSTASH_VERSION:-7.1.0}
     ports:
       - "${LOGSTASH_TCP_PORT:-5000}:${LOGSTASH_TCP_PORT:-5000}/tcp"
@@ -59,16 +65,19 @@ services:
   kibana: 
     build:
       context: ../images/kibana/
+      args:
+        KIBANA_IMAGE_URL: ${KIBANA_IMAGE_URL:-kibana}
+        KIBANA_VERSION: ${KIBANA_VERSION:-7.1.0}
     image: kibana-${KIBANA_VERSION:-7.1.0}
     environment:
       ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-changeme}
-      KIBANA_BASE_PATH: ${KIBANA_BASE_PATH:-/}
+#      KIBANA_BASE_PATH: ${KIBANA_BASE_PATH:-/}
       LOGSPOUT: ignore
     ports:
       - "5601:5601"
     volumes:
       - ${KIBANA_DATA:-/elk/kibana}:/usr/share/kibana/data:rw
-      - $PWD/images/kibana/config/kibana.yml:/usr/share/kibana/config/logstash.yml:ro
+      - $PWD/images/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
     networks:
       elk:
         aliases:
