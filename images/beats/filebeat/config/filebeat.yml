@@ -25,17 +25,10 @@ setup.template.pattern: "filebeat-${INDEX_NAME:default}-%{[beat.version]}-*"
 
 #=========================== Filebeat prospectors ==============================
 
-
-filebeat.prospectors:
-- type: docker
-  containers.ids:
-    - '*'
-  processors:
-    - add_docker_metadata: ~
-    - add_cloud_metadata: ~
-    - add_locale: ~
-  ignore_decoding_error: true
-  json.keys_under_root: true
+filebeat.autodiscover:
+  providers:
+    - type: docker
+      hints.enabled: true
 
 #- type: log
 #  enabled: true
